@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using Unity.VisualScripting;
+
+[System.Serializable]
 public class UserData //: MonoBehaviour
 {
     public string userName;

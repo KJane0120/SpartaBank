@@ -24,9 +24,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    private void Start()
-    {
-        data = new UserData("염예찬", 50000, 100000);
-    }
 }
