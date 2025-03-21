@@ -4,17 +4,24 @@ using UnityEngine.UI;
 
 public class PopUpBank : MonoBehaviour
 {
+    [Header("TextMeshProUGUI")]
     [SerializeField] private TextMeshProUGUI userNameText;
     [SerializeField] private TextMeshProUGUI cashText;
     [SerializeField] private TextMeshProUGUI balanceText;
+
+    [Header("GameObject")]
     [SerializeField] private GameObject ATM;
     [SerializeField] private GameObject depositWindow;
     [SerializeField] private GameObject withdrawWindow;
     [SerializeField] private GameObject popupErrorPanel;
+
+    [Header("Button")]
     [SerializeField] private Button depositBtn;
     [SerializeField] private Button withdrawBtn;
     [SerializeField] private Button customMoney_deposit;
     [SerializeField] private Button customMoney_withdraw;
+
+    [Header("TMP_InputField")]
     [SerializeField] private TMP_InputField inputFieldText_deposit;
     [SerializeField] private TMP_InputField inputFieldText_withdraw;
 
@@ -22,19 +29,37 @@ public class PopUpBank : MonoBehaviour
     public UserData data { get => GameManager.Instance.data; }
     private void Start()
     {
-        GameManager.Instance.data = new UserData("염예찬", 100000, 50000);
+        GameManager.Instance.LoadUserData();
+        Refresh();
+        //Debug.Log($"IsSuccesLoad() 결과: {GameManager.Instance.IsSuccesLoad()}");
+        //if (!GameManager.Instance.IsSuccesLoad())
+        //{
+            //GameManager.Instance.data = new UserData("염예찬", 100000, 50000);
+            //GameManager.Instance.SaveUserData(GameManager.Instance.data);
+        //    Refresh();
+        //}
+        //else Refresh();
+       
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Refresh();
     }
 
     public void Refresh()
     {
+        if(GameManager.Instance.data == null)
+        {
+            Debug.LogError("GameManager.Instance.data가 null입니다");
+            return;
+        }
+
         data.userName = GameManager.Instance.data.userName;
         data.cash = GameManager.Instance.data.cash;
         data.balance = GameManager.Instance.data.balance;
+
+        GameManager.Instance.SaveUserData();
 
         userNameText.text = data.userName;
         cashText.text = string.Format("{0:N0}", data.cash);
@@ -51,6 +76,7 @@ public class PopUpBank : MonoBehaviour
 
         data.cash -= cash;
         data.balance += cash;
+        //GameManager.Instance.SaveUserData(data);
         Refresh();
     }
 
@@ -70,6 +96,7 @@ public class PopUpBank : MonoBehaviour
 
         data.balance -= balance;
         data.cash += balance;
+        //GameManager.Instance.SaveUserData(data);
         Refresh();
     }
 
