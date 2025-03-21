@@ -55,25 +55,29 @@ public class GameManager : MonoBehaviour
     //    if (File.Exists(savePath) && data != null && data.userName != "") return true;
     //    else return false;
     //}
-    public void SaveUserData()
+
+    public void SaveUserData(string ID, string pw, string name, int cash, int balance)
     {
-        PlayerPrefs.SetString("userName", data.userName);
-        PlayerPrefs.SetInt("cash", data.cash);
-        PlayerPrefs.SetInt("balance", data.balance);
+        data = new UserData(ID, pw, name, cash, balance);
+
+        PlayerPrefs.SetString(ID +"/Password", pw);
+        PlayerPrefs.SetString(ID +"/Name", name);
+        PlayerPrefs.SetInt(ID + "/cash", cash);
+        PlayerPrefs.SetInt(ID + "/balance", balance);
+
         PlayerPrefs.Save();
     }
 
-    public void LoadUserData()
+    public void LoadUserData(string ID)
     {
-        if (data != null || PlayerPrefs.HasKey("userName") || PlayerPrefs.HasKey("cash") || PlayerPrefs.HasKey("balance"))
+        if (data != null && PlayerPrefs.HasKey(ID+"/Password"))
         {
-            GameManager.Instance.data.userName = PlayerPrefs.GetString("userName", "염예찬");
-            GameManager.Instance.data.cash = PlayerPrefs.GetInt("cash", 100000);
-            GameManager.Instance.data.balance = PlayerPrefs.GetInt("balance", 50000);
-            //Refresh();
-            //Debug.Log("PlayerPrefs 반영 완료");
+            GameManager.Instance.data.PW = PlayerPrefs.GetString(ID + "/Password", "K0000");
+            GameManager.Instance.data.Name = PlayerPrefs.GetString(ID + "/Name", "김재민");
+            GameManager.Instance.data.cash = PlayerPrefs.GetInt(ID + "/cash", 100000);
+            GameManager.Instance.data.balance = PlayerPrefs.GetInt(ID + "/balance", 50000);
         }
         else
-            GameManager.Instance.data = new UserData("염예찬", 100000, 50000);
+            GameManager.Instance.data = new UserData("KJM", "K0000", "김재민", 100000, 50000);
     }
 }
