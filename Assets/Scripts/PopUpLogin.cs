@@ -23,9 +23,9 @@ public class PopUpLogin : MonoBehaviour
     public UserData LogInCheck(string id, string pw)
     {
         //ID 존재 여부
-        if (PlayerPrefs.HasKey(id + "/Password"))
+        if (PlayerPrefs.HasKey(id + GameManager.PW))
         {
-            string storePw = PlayerPrefs.GetString(id + "/Password");
+            string storePw = PlayerPrefs.GetString(id + GameManager.PW);
 
             if (pw == storePw) //비밀번호 일치 여부 확인
             {

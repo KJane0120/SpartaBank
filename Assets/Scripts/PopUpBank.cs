@@ -33,7 +33,6 @@ public class PopUpBank : MonoBehaviour
     public UserData data { get => GameManager.Instance.data; }
     private void Start()
     {
-        GameManager.Instance.LoadUserData(data.ID);
         Refresh();
         //Debug.Log($"IsSuccesLoad() 결과: {GameManager.Instance.IsSuccesLoad()}");
         //if (!GameManager.Instance.IsSuccesLoad())
@@ -46,11 +45,6 @@ public class PopUpBank : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        Refresh();
-    }
-
     public void Refresh()
     {
         if (GameManager.Instance.data == null)
@@ -58,12 +52,14 @@ public class PopUpBank : MonoBehaviour
             Debug.LogError("GameManager.Instance.data가 null입니다");
             return;
         }
-
+        
         data.Name = GameManager.Instance.data.Name;
         data.cash = GameManager.Instance.data.cash;
         data.balance = GameManager.Instance.data.balance;
 
-        GameManager.Instance.SaveUserData(data.ID, data.Name, data.PW, data.cash, data.balance);
+        Debug.Log($"{data.ID}, {data.PW}, {data.Name}, {data.cash}, {data.balance}");
+        GameManager.Instance.SaveUserData(data.ID, data.PW, data.Name, data.cash, data.balance);
+        Debug.Log($"{data.ID}, {data.PW}, {data.Name}, {data.cash}, {data.balance}");
 
         userNameText.text = data.Name;
         cashText.text = string.Format("{0:N0}", data.cash);

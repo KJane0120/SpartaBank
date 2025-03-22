@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.IO;
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -7,6 +7,11 @@ public class GameManager : MonoBehaviour
 
     //public string savePath;
     public UserData data;
+
+    public static readonly string Name = "/Name";
+    public static readonly string PW = "/Password";
+    public static readonly string Cash = "/Cash";
+    public static readonly string Balance = "/Balance";
 
     public void Awake()
     {
@@ -58,26 +63,27 @@ public class GameManager : MonoBehaviour
 
     public void SaveUserData(string ID, string pw, string name, int cash, int balance)
     {
-        data = new UserData(ID, pw, name, cash, balance);
-
-        PlayerPrefs.SetString(ID +"/Password", pw);
-        PlayerPrefs.SetString(ID +"/Name", name);
-        PlayerPrefs.SetInt(ID + "/cash", cash);
-        PlayerPrefs.SetInt(ID + "/balance", balance);
+        PlayerPrefs.SetString(ID + PW, pw);
+        PlayerPrefs.SetString(ID + Name, name);
+        PlayerPrefs.SetInt(ID + Cash, cash);
+        PlayerPrefs.SetInt(ID + Balance, balance);
 
         PlayerPrefs.Save();
+
+        UserData newdata = new UserData(ID, pw, name, cash, balance);
     }
 
     public void LoadUserData(string ID)
     {
-        if (data != null && PlayerPrefs.HasKey(ID+"/Password"))
+        if (PlayerPrefs.HasKey(ID + PW))
         {
-            GameManager.Instance.data.PW = PlayerPrefs.GetString(ID + "/Password", "K0000");
-            GameManager.Instance.data.Name = PlayerPrefs.GetString(ID + "/Name", "김재민");
-            GameManager.Instance.data.cash = PlayerPrefs.GetInt(ID + "/cash", 100000);
-            GameManager.Instance.data.balance = PlayerPrefs.GetInt(ID + "/balance", 50000);
+            GameManager.Instance.data.ID = ID; //얘 추가 안 해줘서 계정생성 시 데이터와 뱅크때 데이터가 따로 놀고 있었음
+            GameManager.Instance.data.PW = PlayerPrefs.GetString(ID + PW, "null");
+            GameManager.Instance.data.Name = PlayerPrefs.GetString(ID + Name, "null");
+            GameManager.Instance.data.cash = PlayerPrefs.GetInt(ID + Cash, 0);
+            GameManager.Instance.data.balance = PlayerPrefs.GetInt(ID + Balance, 0);
         }
         else
-            GameManager.Instance.data = new UserData("KJM", "K0000", "김재민", 100000, 50000);
+            GameManager.Instance.data = new UserData("null", "null", "null", 0, 0);
     }
 }
