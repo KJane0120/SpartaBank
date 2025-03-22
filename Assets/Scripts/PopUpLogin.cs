@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using VInspector.Libs;
 
 public class PopUpLogin : MonoBehaviour
 {
@@ -19,9 +20,16 @@ public class PopUpLogin : MonoBehaviour
     {
         logInBtn.onClick.AddListener(OnClickLogIn);
     }
+
     //ID랑 PW 비교해서 저장된 데이터와 비교하기
     public UserData LogInCheck(string id, string pw)
     {
+        if(inputField_ID.text.IsNullOrEmpty() || inputField_PW.text.IsNullOrEmpty())
+        {
+            popupError.SetActive(true);
+            popupError.GetComponentInChildren<TextMeshProUGUI>(true).text = "정보를 입력해주세요.";
+            return null;
+        }
         //ID 존재 여부
         if (PlayerPrefs.HasKey(id + GameManager.PW))
         {
