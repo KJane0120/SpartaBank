@@ -30,21 +30,10 @@ public class PopUpBank : MonoBehaviour
     [SerializeField] private TMP_InputField transfer_Name;
     [SerializeField] private TMP_InputField transfer_Money;
 
-
-
     public UserData data { get => GameManager.Instance.data; }
     private void Start()
     {
         Refresh();
-        //Debug.Log($"IsSuccesLoad() 결과: {GameManager.Instance.IsSuccesLoad()}");
-        //if (!GameManager.Instance.IsSuccesLoad())
-        //{
-        //GameManager.Instance.data = new UserData("염예찬", 100000, 50000);
-        //GameManager.Instance.SaveUserData(GameManager.Instance.data);
-        //    Refresh();
-        //}
-        //else Refresh();
-
     }
 
     public void Refresh()
@@ -76,7 +65,6 @@ public class PopUpBank : MonoBehaviour
 
         data.cash -= cash;
         data.balance += cash;
-        //GameManager.Instance.SaveUserData(data);
         Refresh();
     }
 
@@ -99,7 +87,6 @@ public class PopUpBank : MonoBehaviour
 
         data.balance -= balance;
         data.cash += balance;
-        //GameManager.Instance.SaveUserData(data);
         Refresh();
     }
 
@@ -129,8 +116,7 @@ public class PopUpBank : MonoBehaviour
         
         
         //입력한 송금 대상의 ID나 이름이 데이터에 있을 때
-        if (/*input_Name.text == PlayerPrefs.GetString(data.ID + GameManager.Name)
-            ||*/ PlayerPrefs.HasKey(input_Name.text + GameManager.PW))
+        if (PlayerPrefs.HasKey(input_Name.text + GameManager.PW))
         {
             //금액란이 비어있지 않을 때 
             if (!transfer_Money.text.IsNullOrEmpty())
@@ -161,7 +147,7 @@ public class PopUpBank : MonoBehaviour
         data.balance -= balance; //내 통장에서 돈 빠져나감
         Debug.Log(PlayerPrefs.GetInt(id + GameManager.Balance)); //송금대상의 통장잔액
         PlayerPrefs.SetInt(id + GameManager.Balance, savedMoney + balance); // 송금대상에게 보낸돈만큼 더해주기
-        Debug.Log(PlayerPrefs.GetInt(id + GameManager.Balance));// 반영된 송금대상으 ㅣ통장잔액
+        Debug.Log(PlayerPrefs.GetInt(id + GameManager.Balance));// 반영된 송금대상의 통장잔액
         Refresh();
     }
 
